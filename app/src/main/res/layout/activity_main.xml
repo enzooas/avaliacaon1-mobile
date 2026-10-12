@@ -1,13 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/waterProgressView"
-    android:layout_width="280dp"
-    android:layout_height="280dp"
-    app:progressColor="#2196F3"
-    app:textColor="#000000"
-    app:maxValue="2000"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent" />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:gravity="center_horizontal">
+
+        <com.ucsal.avaliacaon1.WaterProgressView
+            android:id="@+id/waterProgressView"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/descricao_consumo_agua"
+            app:progressColor="#38BDF8"
+            app:textColor="#FFFFFF"
+            app:maxValue="2000" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/registrar_consumo"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp" />
+
+        <EditText
+            android:id="@+id/editConsumo"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:minHeight="48dp"
+            android:hint="@string/volume_hint"
+            android:inputType="number"
+            android:importantForAutofill="no"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#BDBDBD" />
+
+        <Button
+            android:id="@+id/btnRegistrar"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:minHeight="48dp"
+            android:backgroundTint="#0369A1"
+            android:textColor="#FFFFFF"
+            android:text="@string/registrar_consumo"
+            android:contentDescription="@string/adicionar_consumo" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/meta_diaria"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/editMeta"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:minHeight="48dp"
+            android:hint="@string/meta_hint"
+            android:inputType="number"
+            android:importantForAutofill="no"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#BDBDBD"/>
+
+        <Button
+            android:id="@+id/btnSalvarMeta"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:minHeight="48dp"
+            android:backgroundTint="#0369A1"
+            android:textColor="#FFFFFF"
+            android:text="@string/salvar_meta" />
+
+        <TextView
+            android:id="@+id/textAcumulado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/consumo_acumulado_inicial"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/historico_hoje"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/textHistorico"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/nenhum_consumo"
+            android:textSize="14sp"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp" />
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">Avaliacao N1</string>
+
+    <string name="registrar_consumo">Registrar consumo</string>
+    <string name="volume_hint">Volume em ml (ex.: 250)</string>
+    <string name="meta_diaria">Meta diária</string>
+    <string name="meta_hint">Meta em ml (ex.: 2000)</string>
+    <string name="salvar_meta">Salvar meta</string>
+    <string name="historico_hoje">Histórico de hoje</string>
+    <string name="nenhum_consumo">Nenhum consumo registrado hoje.</string>
+    <string name="consumo_acumulado_inicial">Consumo acumulado: 0 ml</string>
+    <string name="consumo_acumulado">Consumo acumulado: %1$d ml / Meta: %2$d ml</string>
+    <string name="meta_ultrapassada">META ULTRAPASSADA!</string>
+    <string name="volume_invalido">Informe um número válido</string>
+    <string name="volume_obrigatorio">Informe o volume consumido</string>
+    <string name="volume_maior_zero">O volume deve ser maior que zero</string>
+    <string name="meta_obrigatoria">Informe a meta diária</string>
+    <string name="meta_maior_zero">A meta deve ser maior que zero</string>
+    <string name="registro_falhou">Não foi possível registrar o consumo.</string>
+    <string name="consumo_registrado">Consumo registrado!</string>
+    <string name="meta_atualizada">Meta diária atualizada!</string>
+    <string name="adicionar_consumo">Adicionar consumo de água</string>
+    <string name="descricao_consumo_agua">Consumo diário de água</string>
+
 </resources>

@@ -1,36 +1,41 @@
+
 package com.ucsal.avaliacaon1;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
-import android.graphics.Color;
+import androidx.annotation.NonNull;
 
 public class WaterProgressView extends View {
 
-    private int progressColor = Color.BLUE;
-    private int textColor = Color.BLACK;
-    private int maxValue = 2000;
+    private final int progressColor;
+    private final int textColor;
+    private int maxValue;
+
     private int consumedMl = 0;
     private float progress = 0f;
+
+    private ValueAnimator progressAnimator;
     private boolean showAbsolute = false;
 
-    private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final RectF oval = new RectF();
+    private final Paint paint =
+            new Paint(Paint.ANTI_ALIAS_FLAG);
 
     public WaterProgressView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        TypedArray a = context.obtainStyledAttributes(
+        try (TypedArray a = context.obtainStyledAttributes(
                 attrs,
                 R.styleable.WaterProgressView
-        );
-
-        try {
+        )) {
             progressColor = a.getColor(
                     R.styleable.WaterProgressView_progressColor,
                     Color.BLUE
@@ -45,8 +50,10 @@ public class WaterProgressView extends View {
                     R.styleable.WaterProgressView_maxValue,
                     2000
             );
-        } finally {
-            a.recycle();
+
+            if (maxValue <= 0) {
+                maxValue = 2000;
+            }
         }
 
         setOnClickListener(v -> {
@@ -55,19 +62,31 @@ public class WaterProgressView extends View {
         });
     }
 
+    // Recebe o percentual e anima o progresso.
     public void setProgress(int value) {
-        animateProgress(value);
+        int percentage = Math.max(0, value);
+
+        // Mantém o modo absoluto e o alerta coerentes
+        // quando este metodo é chamado diretamente.
+        consumedMl = (int) Math.round(
+                maxValue * (percentage / 100.0)
+        );
+
+        animateProgress(percentage);
     }
 
+    // Atualiza o consumo real e a meta diária.
     public void setConsumption(int consumedMl, int newMaxValue) {
-        this.consumedMl = Math.max(0, consumedMl);
-        setMaxValue(newMaxValue);
+        if (newMaxValue <= 0) {
+            return;
+        }
 
-        int percentage = maxValue > 0
-                ? (int) Math.round(
-                consumedMl * 100.0 / maxValue
-        )
-                : 0;
+        this.consumedMl = Math.max(0, consumedMl);
+        this.maxValue = newMaxValue;
+
+        int percentage = (int) Math.round(
+                this.consumedMl * 100.0 / this.maxValue
+        );
 
         animateProgress(percentage);
     }
@@ -77,7 +96,7 @@ public class WaterProgressView extends View {
             return;
         }
 
-        maxValue = value;
+        this.maxValue = value;
 
         int percentage = (int) Math.round(
                 consumedMl * 100.0 / maxValue
@@ -87,52 +106,81 @@ public class WaterProgressView extends View {
     }
 
     private void animateProgress(int target) {
-        ValueAnimator animator = ValueAnimator.ofFloat(
+        if (progressAnimator != null) {
+            progressAnimator.cancel();
+        }
+
+        progressAnimator = ValueAnimator.ofFloat(
                 progress,
                 target
         );
 
-        animator.setDuration(500);
+        progressAnimator.setDuration(500);
 
-        animator.addUpdateListener(animation -> {
+        progressAnimator.addUpdateListener(animation -> {
             progress = (float) animation.getAnimatedValue();
             invalidate();
         });
 
-        animator.start();
+        progressAnimator.start();
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
 
-        float centerX = getWidth() / 2f;
-        float centerY = getHeight() / 2f;
+        float width = getWidth();
+        float height = getHeight();
 
-        float radius = Math.min(getWidth(), getHeight()) * 0.32f;
-        float stroke = Math.max(8f, radius * 0.12f);
+        float centerX = width / 2f;
+        float centerY = height / 2f;
 
-        boolean exceeded = maxValue > 0 && consumedMl > maxValue;
+        float titleSpace = height * 0.12f;
+        float alertSpace = height * 0.12f;
 
-        // Título
+        float availableHeight =
+                Math.max(0f, height - titleSpace - alertSpace);
+
+        float radius = Math.max(0f, Math.min(
+                width * 0.32f,
+                availableHeight * 0.38f
+        ));
+
+        float stroke = Math.max(4f, radius * 0.12f);
+
+        boolean exceeded = consumedMl > maxValue;
+
+        // Título.
         paint.setColor(textColor);
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(Math.max(12f, radius * 0.20f));
+        paint.setTextSize(Math.max(8f, radius * 0.20f));
         paint.setStyle(Paint.Style.FILL);
 
+        String title = "Consumo diário de água";
+
+        // Reduz o texto se ele não couber na largura.
+        float maxTextWidth = Math.max(0f, width - 16f);
+        float titleWidth = paint.measureText(title);
+
+        if (titleWidth > maxTextWidth && titleWidth > 0f) {
+            paint.setTextSize(
+                    paint.getTextSize() * maxTextWidth / titleWidth
+            );
+        }
+
         canvas.drawText(
-                "Consumo diário de água",
+                title,
                 centerX,
-                centerY - radius - stroke * 1.5f,
+                titleSpace / 2f + paint.getTextSize() / 2f + 10f,
                 paint
         );
 
-        // Parte restante da meta
+        // Parte restante da meta.
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(stroke);
         paint.setColor(Color.LTGRAY);
 
-        RectF oval = new RectF(
+        oval.set(
                 centerX - radius,
                 centerY - radius,
                 centerX + radius,
@@ -141,18 +189,18 @@ public class WaterProgressView extends View {
 
         canvas.drawArc(oval, -90, 360, false, paint);
 
-        // Progresso realizado
+        // Progresso realizado.
         paint.setColor(exceeded ? Color.RED : progressColor);
 
-        float sweep = Math.min(progress, 100f) * 3.6f;
+        float sweep = Math.min(Math.max(progress, 0f), 100f) * 3.6f;
 
         canvas.drawArc(oval, -90, sweep, false, paint);
 
-        // Texto central
+        // Texto central.
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(exceeded ? Color.RED : textColor);
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(Math.max(16f, radius * 0.38f));
+        paint.setTextSize(Math.max(8f, radius * 0.38f));
 
         String centerText;
 
@@ -162,6 +210,21 @@ public class WaterProgressView extends View {
             centerText = Math.round(progress) + "%";
         }
 
+
+        // Ajusta o texto para caber dentro do círculo.
+        float centerTextWidth = paint.measureText(centerText);
+
+        // Usa 70% do diâmetro como largura máxima disponível.
+        float maxCenterWidth = radius * 1.4f;
+
+        if (centerTextWidth > maxCenterWidth
+                && centerTextWidth > 0f) {
+            float novoTamanho = paint.getTextSize()
+                    * maxCenterWidth / centerTextWidth;
+
+            paint.setTextSize(Math.max(8f, novoTamanho));
+        }
+
         canvas.drawText(
                 centerText,
                 centerX,
@@ -169,14 +232,24 @@ public class WaterProgressView extends View {
                 paint
         );
 
-        // Alerta visual
+        // Alerta visual.
         if (exceeded) {
-            paint.setTextSize(Math.max(12f, radius * 0.19f));
+            paint.setColor(Color.RED);
+            paint.setTextSize(Math.max(8f, radius * 0.19f));
+
+            String alert = "META ULTRAPASSADA!";
+            float alertWidth = paint.measureText(alert);
+
+            if (alertWidth > maxTextWidth && alertWidth > 0f) {
+                paint.setTextSize(
+                        paint.getTextSize() * maxTextWidth / alertWidth
+                );
+            }
 
             canvas.drawText(
-                    "META ULTRAPASSADA!",
+                    alert,
                     centerX,
-                    centerY + radius + stroke * 2f,
+                    height - alertSpace / 2f,
                     paint
             );
         }
