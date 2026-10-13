@@ -1,4 +1,3 @@
-
 package com.ucsal.avaliacaon1;
 
 import android.animation.ValueAnimator;
@@ -29,27 +28,39 @@ public class WaterProgressView extends View {
     private final Paint paint =
             new Paint(Paint.ANTI_ALIAS_FLAG);
 
+    public WaterProgressView(Context context) {
+        this(context, null);
+    }
+
     public WaterProgressView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
+    }
+
+    public WaterProgressView(Context context, AttributeSet attrs,
+                             int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
 
         try (TypedArray a = context.obtainStyledAttributes(
                 attrs,
-                R.styleable.WaterProgressView
-        )) {
+                R.styleable.WaterProgressView,
+                defStyleAttr,
+                0)) {
+
             progressColor = a.getColor(
                     R.styleable.WaterProgressView_progressColor,
-                    Color.BLUE
-            );
+                    getResources().getColor(
+                            R.color.progress_color,
+                            context.getTheme()));
 
             textColor = a.getColor(
                     R.styleable.WaterProgressView_textColor,
-                    Color.BLACK
-            );
+                    getResources().getColor(
+                            R.color.text_primary,
+                            context.getTheme()));
 
             maxValue = a.getInt(
                     R.styleable.WaterProgressView_maxValue,
-                    2000
-            );
+                    2000);
 
             if (maxValue <= 0) {
                 maxValue = 2000;
@@ -156,7 +167,8 @@ public class WaterProgressView extends View {
         paint.setTextSize(Math.max(8f, radius * 0.20f));
         paint.setStyle(Paint.Style.FILL);
 
-        String title = "Consumo diário de água";
+        String title = getContext().getString(
+                R.string.descricao_consumo_agua);
 
         // Reduz o texto se ele não couber na largura.
         float maxTextWidth = Math.max(0f, width - 16f);
@@ -178,7 +190,8 @@ public class WaterProgressView extends View {
         // Parte restante da meta.
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(stroke);
-        paint.setColor(Color.LTGRAY);
+        paint.setColor(getResources().getColor(
+                R.color.progress_remaining, getContext().getTheme()));
 
         oval.set(
                 centerX - radius,
@@ -190,7 +203,10 @@ public class WaterProgressView extends View {
         canvas.drawArc(oval, -90, 360, false, paint);
 
         // Progresso realizado.
-        paint.setColor(exceeded ? Color.RED : progressColor);
+        int alertColor = getResources().getColor(
+                R.color.alert_color, getContext().getTheme());
+
+        paint.setColor(exceeded ? alertColor : progressColor);
 
         float sweep = Math.min(Math.max(progress, 0f), 100f) * 3.6f;
 
@@ -198,7 +214,7 @@ public class WaterProgressView extends View {
 
         // Texto central.
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(exceeded ? Color.RED : textColor);
+        paint.setColor(exceeded ? alertColor : textColor);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(Math.max(8f, radius * 0.38f));
 
@@ -234,10 +250,11 @@ public class WaterProgressView extends View {
 
         // Alerta visual.
         if (exceeded) {
-            paint.setColor(Color.RED);
+            paint.setColor(alertColor);
             paint.setTextSize(Math.max(8f, radius * 0.19f));
 
-            String alert = "META ULTRAPASSADA!";
+            String alert = getContext().getString(
+                    R.string.meta_ultrapassada);
             float alertWidth = paint.measureText(alert);
 
             if (alertWidth > maxTextWidth && alertWidth > 0f) {

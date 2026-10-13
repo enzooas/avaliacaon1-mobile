@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="screen_background">#FF0F172A</color>
+    <color name="text_primary">#FFF1F5F9</color>
+    <color name="text_secondary">#FFCBD5E1</color>
+    <color name="input_background">#FF1E293B</color>
+    <color name="input_text">#FFF1F5F9</color>
+    <color name="input_hint">#FFCBD5E1</color>
+    <color name="button_background">#FF0369A1</color>
+    <color name="button_text">#FFFFFFFF</color>
+    <color name="progress_color">#FF38BDF8</color>
+    <color name="progress_remaining">#FF475569</color>
+    <color name="alert_color">#FFF87171</color>
+</resources>

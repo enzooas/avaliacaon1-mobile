@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="@color/screen_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,8 +20,8 @@
             android:layout_height="280dp"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/descricao_consumo_agua"
-            app:progressColor="#38BDF8"
-            app:textColor="#FFFFFF"
+            app:progressColor="@color/progress_color"
+            app:textColor="@color/text_primary"
             app:maxValue="2000" />
 
         <TextView
@@ -40,8 +41,8 @@
             android:hint="@string/volume_hint"
             android:inputType="number"
             android:importantForAutofill="no"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#BDBDBD" />
+            android:textColor="@color/input_text"
+            android:textColorHint="@color/input_hint" />
 
         <Button
             android:id="@+id/btnRegistrar"
@@ -49,8 +50,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:minHeight="48dp"
-            android:backgroundTint="#0369A1"
-            android:textColor="#FFFFFF"
+            android:backgroundTint="@color/button_background"
+            android:textColor="@color/button_text"
             android:text="@string/registrar_consumo"
             android:contentDescription="@string/adicionar_consumo" />
 
@@ -71,8 +72,8 @@
             android:hint="@string/meta_hint"
             android:inputType="number"
             android:importantForAutofill="no"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#BDBDBD"/>
+            android:textColor="@color/input_text"
+            android:textColorHint="@color/input_hint"/>
 
         <Button
             android:id="@+id/btnSalvarMeta"
@@ -80,8 +81,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:minHeight="48dp"
-            android:backgroundTint="#0369A1"
-            android:textColor="#FFFFFF"
+            android:backgroundTint="@color/button_background"
+            android:textColor="@color/button_text"
             android:text="@string/salvar_meta" />
 
         <TextView
@@ -91,7 +92,8 @@
             android:text="@string/consumo_acumulado_inicial"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="20dp"
+            android:textColor="@color/text_primary" />
 
         <TextView
             android:layout_width="match_parent"

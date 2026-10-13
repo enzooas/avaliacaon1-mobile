@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Water Tracker</string>
+
+    <string name="registrar_consumo">Record water intake</string>
+    <string name="volume_hint">Volume in ml (e.g., 250)</string>
+    <string name="meta_diaria">Daily goal</string>
+    <string name="meta_hint">Goal in ml (e.g., 2000)</string>
+    <string name="salvar_meta">Save goal</string>
+    <string name="historico_hoje">Today\'s history</string>
+    <string name="nenhum_consumo">No water intake recorded today.</string>
+    <string name="consumo_acumulado">Total consumed: %1$d ml / Goal: %2$d ml</string>
+    <string name="meta_ultrapassada">GOAL EXCEEDED!</string>
+    <string name="volume_invalido">Enter a valid number</string>
+    <string name="volume_obrigatorio">Enter the amount consumed</string>
+    <string name="volume_maior_zero">Volume must be greater than zero</string>
+    <string name="meta_obrigatoria">Enter the daily goal</string>
+    <string name="meta_maior_zero">Goal must be greater than zero</string>
+    <string name="registro_falhou">Could not record water intake.</string>
+    <string name="consumo_registrado">Water intake recorded!</string>
+    <string name="descricao_consumo_agua">Daily water intake</string>
+    <string name="meta_invalida">Enter a valid goal</string>
+    <string name="meta_atualizada">Daily goal updated!</string>
+    <string name="adicionar_consumo">Add water intake</string>
+    <string name="consumo_acumulado_inicial">Total consumed: 0 ml</string>
+    <string name="registro_historico">🕒 %1$s — %2$d ml</string>
+    <string name="meta_falha">Could not save the goal.</string>
+
+</resources>

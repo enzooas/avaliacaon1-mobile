@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Avaliacao N1</string>
+    <string name="app_name">Consumo de água</string>
 
     <string name="registrar_consumo">Registrar consumo</string>
     <string name="volume_hint">Volume em ml (ex.: 250)</string>
@@ -21,5 +22,8 @@
     <string name="meta_atualizada">Meta diária atualizada!</string>
     <string name="adicionar_consumo">Adicionar consumo de água</string>
     <string name="descricao_consumo_agua">Consumo diário de água</string>
+    <string name="meta_invalida">Informe uma meta válida</string>
+    <string name="registro_historico">🕒 %1$s — %2$d ml</string>
+    <string name="meta_falha">Não foi possível salvar a meta.</string>
 
 </resources>

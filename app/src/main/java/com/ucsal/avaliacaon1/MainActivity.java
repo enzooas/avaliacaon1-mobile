@@ -1,7 +1,5 @@
-
 package com.ucsal.avaliacaon1;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -132,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             novaMeta = Integer.parseInt(texto);
         } catch (NumberFormatException e) {
-            editMeta.setError(getString(R.string.volume_invalido));
+            editMeta.setError(getString(R.string.meta_invalida));
             return;
         }
 
@@ -141,9 +139,18 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        databaseHelper.salvarMeta(novaMeta);
-        metaDiaria = novaMeta;
+        boolean sucesso = databaseHelper.salvarMeta(novaMeta);
 
+        if (!sucesso) {
+            Toast.makeText(
+                    this,
+                    getString(R.string.meta_falha),
+                    Toast.LENGTH_SHORT
+            ).show();
+            return;
+        }
+
+        metaDiaria = novaMeta;
         atualizarInterface();
 
         Toast.makeText(
@@ -174,12 +181,12 @@ public class MainActivity extends AppCompatActivity {
         );
 
         if (consumoAcumulado > metaDiaria) {
-            textAcumulado.setTextColor(Color.RED);
+            textAcumulado.setTextColor(getColor(R.color.alert_color));
             textAcumulado.append(
                     "\n" + getString(R.string.meta_ultrapassada)
             );
         } else {
-            textAcumulado.setTextColor(Color.WHITE);
+            textAcumulado.setTextColor(getColor(R.color.text_primary));
         }
 
         // Busca os registros de hoje como objetos WaterRecord.
@@ -193,11 +200,13 @@ public class MainActivity extends AppCompatActivity {
             String dataHora = registro.getDataHora();
             String horario = dataHora.substring(11, 16);
 
-            historico.append("🕒 ")
-                    .append(horario)
-                    .append("                         ")
-                    .append(registro.getVolumeMl())
-                    .append(" ml\n\n");
+            historico.append(
+                    getString(
+                            R.string.registro_historico,
+                            horario,
+                            registro.getVolumeMl()
+                    )
+            ).append("\n\n");
         }
 
         if (historico.length() == 0) {

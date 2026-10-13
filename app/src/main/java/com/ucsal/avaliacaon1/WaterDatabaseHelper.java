@@ -1,4 +1,3 @@
-
 package com.ucsal.avaliacaon1;
 
 import android.content.ContentValues;
@@ -75,32 +74,36 @@ public class WaterDatabaseHelper extends SQLiteOpenHelper {
         return meta;
     }
 
-    public void salvarMeta(int meta) {
+    public boolean salvarMeta(int meta) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues valores = new ContentValues();
         valores.put("meta_diaria", meta);
 
-        db.update(
+        int linhasAlteradas = db.update(
                 TABLE_CONFIG,
                 valores,
                 "id = ?",
                 new String[]{"1"}
         );
+
+        return linhasAlteradas > 0;
     }
 
     public boolean registrarConsumo(int volume) {
         SQLiteDatabase db = getWritableDatabase();
 
+        Date agora = new Date();
+
         String dataHora = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss",
                 Locale.getDefault()
-        ).format(new Date());
+        ).format(agora);
 
         String data = new SimpleDateFormat(
                 "yyyy-MM-dd",
                 Locale.getDefault()
-        ).format(new Date());
+        ).format(agora);
 
         ContentValues valores = new ContentValues();
         valores.put("volume_ml", volume);
