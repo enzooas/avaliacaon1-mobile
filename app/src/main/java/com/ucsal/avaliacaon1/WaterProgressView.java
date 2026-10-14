@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -77,8 +76,6 @@ public class WaterProgressView extends View {
     public void setProgress(int value) {
         int percentage = Math.max(0, value);
 
-        // Mantém o modo absoluto e o alerta coerentes
-        // quando este metodo é chamado diretamente.
         consumedMl = (int) Math.round(
                 maxValue * (percentage / 100.0)
         );
@@ -99,21 +96,7 @@ public class WaterProgressView extends View {
                 this.consumedMl * 100.0 / this.maxValue
         );
 
-        animateProgress(percentage);
-    }
-
-    public void setMaxValue(int value) {
-        if (value <= 0) {
-            return;
-        }
-
-        this.maxValue = value;
-
-        int percentage = (int) Math.round(
-                consumedMl * 100.0 / maxValue
-        );
-
-        animateProgress(percentage);
+        setProgress(percentage);
     }
 
     private void animateProgress(int target) {
