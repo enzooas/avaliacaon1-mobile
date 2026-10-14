@@ -96,7 +96,7 @@ public class WaterProgressView extends View {
                 this.consumedMl * 100.0 / this.maxValue
         );
 
-        setProgress(percentage);
+        animateProgress(percentage);
     }
 
     private void animateProgress(int target) {
